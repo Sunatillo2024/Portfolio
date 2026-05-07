@@ -1,22 +1,226 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sunatillo Marufjanov — Backend Developer</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono&family=DM+Sans&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+<style>
+:root{
+  --ink:#07090d;--ink2:#0d1117;--card:#0f1520;--surface:#0b1018;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --muted:#3d4f63;--text:#8a9bb0;--white:#eef4ff;
+  --A:#00c8f0;--B:#7B2FFF;--C:#00e091;--D:#f5a623;--E:#ff3d6b;
+  --gA:linear-gradient(135deg,#00c8f0,#7B2FFF);
+  --gB:linear-gradient(135deg,#7B2FFF,#ff3d6b);
+  --gC:linear-gradient(135deg,#00e091,#00c8f0);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-track{background:var(--ink);}::-webkit-scrollbar-thumb{background:var(--B);}
 
+/* CURSOR */
+#CUR{width:10px;height:10px;background:var(--A);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s,width .2s,height .2s;mix-blend-mode:screen;box-shadow:0 0 18px var(--A),0 0 40px rgba(0,200,240,.25);}
+#CUR2{width:34px;height:34px;border:1px solid rgba(0,200,240,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;}
+a,button,input,textarea{cursor:none;}
+
+/* PROGRESS */
+#PROG{position:fixed;top:0;left:0;height:2px;width:0;background:var(--gA);z-index:600;box-shadow:0 0 14px var(--A);}
+
+/* CANVAS */
+#CVS{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,200,240,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,240,.025) 1px,transparent 1px);background-size:70px 70px;z-index:0;pointer-events:none;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(7,9,13,.75);backdrop-filter:blur(28px);}
+.nlogo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;background:var(--gA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+nav ul{display:flex;gap:36px;list-style:none;}
+nav a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+nav a:hover{color:var(--A);}
+.ncta{padding:9px 24px;border:1px solid rgba(0,200,240,.5);color:var(--A);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:all .3s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));}
+.ncta:hover{background:var(--A);color:var(--ink);}
+
+/* HERO */
+#home{min-height:100vh;display:flex;align-items:center;padding:110px 60px 60px;position:relative;z-index:1;}
+.hw{max-width:1200px;margin:0 auto;width:100%;}
+.htag{display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2.5px;color:var(--C);margin-bottom:28px;text-transform:uppercase;}
+.htag-dot{width:7px;height:7px;border-radius:50%;background:var(--C);box-shadow:0 0 10px var(--C);animation:p 2s infinite;}
+@keyframes p{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,224,145,.5);}50%{opacity:.6;box-shadow:0 0 0 8px rgba(0,224,145,0);}}
+h1.hname{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,12vw,178px);letter-spacing:-3px;line-height:.88;color:var(--white);margin-bottom:2px;}
+h1.hname .ga{background:var(--gA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+h1.hname .go{-webkit-text-fill-color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.12);}
+.hsub{display:flex;align-items:flex-end;justify-content:space-between;margin-top:36px;gap:40px;flex-wrap:wrap;}
+.hdesc{font-size:14px;line-height:1.95;color:var(--text);max-width:460px;opacity:.8;}
+.hrc{display:flex;flex-direction:column;gap:24px;align-items:flex-end;}
+.hstats{display:flex;gap:36px;}
+.hs{text-align:center;}
+.hsn{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1;background:var(--gA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hsl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-top:2px;font-family:'DM Mono',monospace;}
+.hbtns{display:flex;gap:12px;}
+.ba{padding:13px 36px;background:var(--gA);border:none;color:var(--ink);font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:opacity .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.ba:hover{opacity:.8;}
+.bb{padding:13px 36px;background:transparent;border:1px solid var(--border2);color:var(--text);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.bb:hover{border-color:var(--A);color:var(--A);}
+
+/* MARQUEE */
+.mwrap{position:relative;z-index:1;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:13px 0;background:var(--surface);}
+.mtrack{display:flex;width:max-content;animation:mq 30s linear infinite;}
+.mi{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--muted);padding:0 28px;display:flex;align-items:center;gap:14px;white-space:nowrap;}
+.mdot{color:var(--A);font-size:7px;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+section{position:relative;z-index:1;}
+.C{max-width:1200px;margin:0 auto;padding:0 60px;}
+.sl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--B);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sl::before{content:'';width:36px;height:1px;background:var(--B);}
+.sh{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,6vw,86px);letter-spacing:-1px;line-height:.93;color:var(--white);margin-bottom:60px;}
+.sh span{background:var(--gA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* ABOUT */
+#about{padding:120px 0;}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.ap{font-size:14px;line-height:2.05;color:var(--text);opacity:.85;margin-bottom:18px;}
+.als{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;}
+.al{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid var(--border2);color:var(--text);text-decoration:none;font-size:11px;letter-spacing:1px;font-family:'DM Mono',monospace;transition:all .3s;}
+.al:hover{border-color:var(--A);color:var(--A);}
+
+/* TERMINAL */
+.term{background:#060810;border:1px solid var(--border);position:relative;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7);}
+.term::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gA);}
+.th2{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;}
+.td{width:10px;height:10px;border-radius:50%;}
+.td1{background:#ff5f57;}.td2{background:#febc2e;}.td3{background:#28c840;}
+.tt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);margin-left:auto;}
+.tb{padding:22px 20px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:2;}
+.tpr{color:var(--C);}.tcm{color:var(--A);}
+.tou{color:#45586a;margin-left:18px;margin-bottom:12px;display:block;font-size:11px;}
+.tcr{display:inline-block;width:7px;height:13px;background:var(--A);vertical-align:middle;animation:bl 1s infinite;}
+@keyframes bl{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* SKILLS */
+#skills{padding:120px 0;}
+.skg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.skc{background:var(--card);padding:34px 28px;transition:background .3s;position:relative;overflow:hidden;}
+.skc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gA);transform:scaleX(0);transition:transform .4s;transform-origin:left;}
+.skc:hover{background:#121a25;}.skc:hover::after{transform:scaleX(1);}
+.skch{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--A);margin-bottom:18px;display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;}
+.skts{display:flex;flex-wrap:wrap;gap:7px;}
+.stg{padding:4px 11px;border:1px solid var(--border);font-size:10px;color:var(--muted);transition:all .2s;font-family:'DM Mono',monospace;}
+.stg:hover{border-color:var(--A);color:var(--A);background:rgba(0,200,240,.04);}
+.stg.h{border-color:rgba(123,47,255,.35);color:rgba(123,47,255,.9);}
+
+/* PROJECTS */
+#projects{padding:120px 0;}
+
+/* FEATURED */
+.pf{border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;display:grid;grid-template-columns:1.1fr 0.9fr;margin-bottom:1px;}
+.pf::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--A),var(--B),var(--C));}
+.pfl{padding:52px 48px;border-right:1px solid var(--border);}
+.pfr{padding:32px;background:#080d13;display:flex;flex-direction:column;}
+.pflabel{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--D);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.pflabel::before{content:'★';font-size:10px;}
+.pftitle{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:-1px;color:var(--white);line-height:.95;margin-bottom:16px;}
+.pfdesc{font-size:13px;line-height:1.95;color:var(--text);margin-bottom:28px;opacity:.85;}
+.pftech{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px;}
+.pfbtns{display:flex;gap:12px;flex-wrap:wrap;}
+.pfscreen{flex:1;background:#060910;border:1px solid var(--border);border-radius:3px;overflow:hidden;display:flex;flex-direction:column;}
+.pfbar{padding:10px 12px;background:#0c1118;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;}
+.psd{width:8px;height:8px;border-radius:50%;}
+.psd1{background:#ff5f57;}.psd2{background:#febc2e;}.psd3{background:#28c840;}
+.purl{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);padding:3px 10px;font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);border-radius:2px;}
+.pfprev{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 16px;flex-direction:column;gap:14px;background:radial-gradient(ellipse at center,rgba(123,47,255,.1) 0%,transparent 70%);}
+.ppico{width:76px;height:76px;border:1px solid rgba(123,47,255,.35);display:flex;align-items:center;justify-content:center;font-size:34px;color:var(--B);box-shadow:0 0 40px rgba(123,47,255,.25);animation:fl 4s ease-in-out infinite;}
+@keyframes fl{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.pptitle{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--white);}
+.ppsub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-align:center;}
+.pplive{margin-top:6px;display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border:1px solid rgba(0,224,145,.3);color:var(--C);font-family:'DM Mono',monospace;font-size:9px;text-decoration:none;letter-spacing:1.5px;transition:all .3s;}
+.pplive:hover{background:rgba(0,224,145,.07);box-shadow:0 0 20px rgba(0,224,145,.15);}
+.plivd{width:5px;height:5px;border-radius:50%;background:var(--C);animation:p 2s infinite;}
+
+/* PROJ GRID */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.pc{background:var(--card);padding:34px 28px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .3s;}
+.pc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gA);transform:scaleX(0);transition:transform .4s;transform-origin:left;}
+.pc:hover{background:#121a25;}.pc:hover::after{transform:scaleX(1);}
+.pc:hover .pico{border-color:var(--A);background:rgba(0,200,240,.06);box-shadow:0 0 22px rgba(0,200,240,.18);}
+.pnum{font-family:'Bebas Neue',sans-serif;font-size:50px;letter-spacing:-1px;color:rgba(255,255,255,.035);line-height:1;margin-bottom:14px;}
+.pico{width:44px;height:44px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--A);font-size:18px;margin-bottom:20px;transition:all .35s;}
+.ptitle{font-weight:700;font-size:17px;color:var(--white);margin-bottom:9px;line-height:1.3;font-family:'DM Sans',sans-serif;}
+.pdesc{font-size:11px;line-height:1.9;color:var(--muted);flex:1;margin-bottom:18px;}
+.ptech{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px;}
+.ptag{padding:3px 8px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.12);color:var(--A);font-family:'DM Mono',monospace;}
+.pl{display:inline-flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--A);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .3s;}
+.pl:hover{border-color:var(--A);}
+.pbadge{position:absolute;top:18px;right:18px;padding:3px 9px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.blive{background:rgba(0,224,145,.08);border:1px solid rgba(0,224,145,.25);color:var(--C);}
+
+/* AI */
+#ai-section{padding:120px 0;}
+.aibox{border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;}
+.aibox::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--B),var(--A),var(--C));}
+.aih{padding:20px 30px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.aihl{display:flex;align-items:center;gap:12px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--white);}
+.aichip{padding:3px 11px;font-size:8px;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;background:linear-gradient(135deg,rgba(0,200,240,.1),rgba(123,47,255,.1));border:1px solid rgba(0,200,240,.2);color:var(--A);}
+.ailive{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--C);}
+.ailvd{width:5px;height:5px;border-radius:50%;background:var(--C);animation:p 2s infinite;}
+#CHAT{padding:30px;min-height:340px;max-height:440px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.cm{max-width:78%;font-size:12px;line-height:1.9;animation:fu .4s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.cm.u{align-self:flex-end;background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.14);padding:13px 18px;color:rgba(0,200,240,.9);font-family:'DM Mono',monospace;font-size:11px;}
+.cm.a{align-self:flex-start;background:rgba(123,47,255,.05);border:1px solid rgba(123,47,255,.14);padding:13px 18px;color:var(--text);}
+.cl{font-size:8px;letter-spacing:2px;text-transform:uppercase;opacity:.35;margin-bottom:5px;font-family:'DM Mono',monospace;}
+.suggs{padding:0 30px 18px;display:flex;flex-wrap:wrap;gap:7px;border-bottom:1px solid var(--border);}
+.sg{padding:6px 15px;background:transparent;border:1px solid var(--border2);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.5px;transition:all .2s;}
+.sg:hover{border-color:var(--A);color:var(--A);background:rgba(0,200,240,.03);}
+.aiir{padding:20px 30px;display:flex;gap:10px;border-top:1px solid var(--border);}
+#CINP{flex:1;background:rgba(255,255,255,.025);border:1px solid var(--border);padding:12px 16px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;outline:none;transition:border-color .3s;}
+#CINP:focus{border-color:var(--A);}#CINP::placeholder{color:var(--muted);font-size:10px;}
+#CSND{padding:12px 30px;background:linear-gradient(135deg,var(--A),var(--B));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:opacity .3s;}
+#CSND:hover{opacity:.82;}#CSND:disabled{opacity:.3;}
+.tyi{display:flex;gap:5px;align-items:center;}
+.tyd{width:5px;height:5px;border-radius:50%;background:var(--A);animation:tyb 1.2s infinite;}
+.tyd:nth-child(2){animation-delay:.2s;}.tyd:nth-child(3){animation-delay:.4s;}
+@keyframes tyb{0%,100%{transform:translateY(0);opacity:.3;}50%{transform:translateY(-6px);opacity:1;}}
+
+/* CONTACT */
+#contact{padding:120px 0;}
+.cg{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}
+.ctc{background:var(--card);padding:34px 28px;display:flex;align-items:center;gap:20px;text-decoration:none;transition:background .3s;}
+.ctc:hover{background:#121a25;}
+.ctci{width:50px;height:50px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--A);font-size:20px;flex-shrink:0;transition:all .35s;}
+.ctc:hover .ctci{border-color:var(--A);box-shadow:0 0 22px rgba(0,200,240,.2);}
+.ctcn h3{font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px;}
+.ctcn p{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+
+/* FOOTER */
+footer{padding:36px 60px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
+.fl{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:var(--gA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.fls{display:flex;gap:22px;}
+.fls a{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:'DM Mono',monospace;transition:color .3s;}
+.fls a:hover{color:var(--A);}
+.fc{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;}
+
+@media(max-width:960px){
+  nav{padding:14px 20px;}nav ul{display:none;}
+  #home,#about .C,#skills .C,#projects .C,#ai-section .C,#contact .C{padding-left:20px;padding-right:20px;}
+  h1.hname{font-size:clamp(54px,18vw,90px);}
+  .ag,.pg,.skg,.cg{grid-template-columns:1fr;}
+  .pf{grid-template-columns:1fr;}.pfr{display:none;}
+  .hsub{flex-direction:column;align-items:flex-start;}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:28px 20px;}
+}
+</style>
+</head>
 <body>
 
-<div id="CUR"></div>
-<div id="CUR2"></div>
-<div id="PROG"></div>
+<div id="CUR"></div><div id="CUR2"></div><div id="PROG"></div>
 <canvas id="CVS"></canvas>
 
 <nav>
@@ -35,24 +239,389 @@
 <section id="home">
   <div class="hw">
     <div class="htag"><div class="htag-dot"></div>Available for Projects — 2025</div>
-
     <h1 class="hname">
       <span class="ga">SUNATILLO</span><br>
       <span class="go">MARUF</span><span class="ga">JANOV</span>
     </h1>
-
     <div class="hsub">
-      <p class="hdesc">
-        17-year-old Python Backend Developer from Uzbekistan.
-        I build scalable APIs, real-time systems, and bots.
-      </p>
+      <p class="hdesc">17-year-old Python Backend Developer from Uzbekistan. I build scalable APIs, real-time systems, payment backends, and Telegram bots that actually ship.</p>
+      <div class="hrc">
+        <div class="hstats">
+          <div class="hs"><div class="hsn">3+</div><div class="hsl">Years Exp.</div></div>
+          <div class="hs"><div class="hsn">10+</div><div class="hsl">Projects</div></div>
+          <div class="hs"><div class="hsn">17</div><div class="hsl">Years Old</div></div>
+        </div>
+        <div class="hbtns">
+          <a href="#projects" class="ba">View Projects</a>
+          <a href="#contact" class="bb">Get In Touch</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- qolgan HTML ni o'zgartirmaysan -->
-<!-- faqat <style> va <script> olib tashlandi -->
+<div class="mwrap"><div class="mtrack" id="MT"></div></div>
 
-<script src="script.js"></script>
+<section id="about">
+  <div class="C">
+    <div class="sl">// about me</div>
+    <h2 class="sh">Who I <span>Am</span></h2>
+    <div class="ag">
+      <div>
+        <p class="ap">I'm Sunatillo — a backend developer who started coding at 14 out of pure curiosity. Three years later, I've shipped 10+ production-grade projects ranging from fintech APIs to real-time video calling platforms.</p>
+        <p class="ap">Python is my primary tool — Django, FastAPI, DRF. I'm actively leveling up in Go and diving deep into WebRTC, microservices, and AI-powered backends.</p>
+        <p class="ap">I code in Uzbek, think in Russian, and communicate in English (B2+). I care about clean architecture, fast deployments, and code that runs in production — not just on localhost.</p>
+        <div class="als">
+          <a href="https://github.com/Sunatillo2024" target="_blank" class="al"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://t.me/jinga_1" target="_blank" class="al"><i class="fab fa-telegram"></i> Telegram</a>
+          <a href="https://instagram.com/m.tillo__" target="_blank" class="al"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="mailto:sunatlohgafur1214@gmail.com" class="al"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+      <div class="term">
+        <div class="th2">
+          <div class="td td1"></div><div class="td td2"></div><div class="td td3"></div>
+          <span class="tt">sunatillo@portfolio — bash — 80×24</span>
+        </div>
+        <div class="tb">
+          <div><span class="tpr">❯ </span><span class="tcm">whoami</span></div>
+          <span class="tou">Sunatillo Marufjanov · 17yo · Tashkent, UZ<br>Python Backend Developer · Open to work</span>
+          <div><span class="tpr">❯ </span><span class="tcm">python --version &amp;&amp; go version</span></div>
+          <span class="tou">Python 3.12.0 · Go 1.22 (learning)</span>
+          <div><span class="tpr">❯ </span><span class="tcm">cat stack.json | jq .main</span></div>
+          <span class="tou">["Django","FastAPI","DRF","PostgreSQL",<br>&nbsp;"Redis","Docker","Nginx","WebRTC"]</span>
+          <div><span class="tpr">❯ </span><span class="tcm">git log --oneline -3</span></div>
+          <span class="tou">a9f2c1e VideoCall live — Render deployed<br>b3d7811 FinTech M-BANK API — shipped<br>c8e0422 ViewStore marketplace — v2</span>
+          <div><span class="tpr">❯ <span class="tcr"></span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="C">
+    <div class="sl">// tech stack</div>
+    <h2 class="sh">My <span>Arsenal</span></h2>
+    <div class="skg">
+      <div class="skc">
+        <div class="skch"><i class="fas fa-code"></i> Languages</div>
+        <div class="skts">
+          <span class="stg h">Python (Advanced)</span><span class="stg h">Go (Learning)</span>
+          <span class="stg">JavaScript</span><span class="stg">C++ (Basic)</span>
+          <span class="stg">TypeScript</span><span class="stg">Shell Script</span>
+        </div>
+      </div>
+      <div class="skc">
+        <div class="skch"><i class="fas fa-layer-group"></i> Frameworks</div>
+        <div class="skts">
+          <span class="stg h">Django</span><span class="stg h">FastAPI</span><span class="stg h">DRF</span>
+          <span class="stg">Celery</span><span class="stg">WebSockets</span>
+          <span class="stg">Flask</span><span class="stg">Vue.js</span><span class="stg">Beego</span>
+        </div>
+      </div>
+      <div class="skc">
+        <div class="skch"><i class="fas fa-database"></i> Databases</div>
+        <div class="skts">
+          <span class="stg h">PostgreSQL</span><span class="stg h">Redis</span>
+          <span class="stg">SQLite</span><span class="stg">MySQL</span>
+        </div>
+      </div>
+      <div class="skc">
+        <div class="skch"><i class="fas fa-server"></i> DevOps</div>
+        <div class="skts">
+          <span class="stg h">Docker</span><span class="stg h">Linux</span><span class="stg h">Nginx</span>
+          <span class="stg">Git/GitHub</span><span class="stg">CI/CD</span>
+          <span class="stg">Gunicorn</span><span class="stg">Render</span><span class="stg">Swagger</span>
+        </div>
+      </div>
+      <div class="skc">
+        <div class="skch"><i class="fas fa-robot"></i> Specializations</div>
+        <div class="skts">
+          <span class="stg h">API Design</span><span class="stg h">Telegram Bots</span>
+          <span class="stg h">Payment Systems</span><span class="stg">AI Integration</span>
+          <span class="stg">WebRTC</span><span class="stg">Auth/Security</span><span class="stg">Microservices</span>
+        </div>
+      </div>
+      <div class="skc">
+        <div class="skch"><i class="fas fa-flask"></i> Exploring</div>
+        <div class="skts">
+          <span class="stg">Machine Learning</span><span class="stg">AWS</span>
+          <span class="stg">GraphQL</span><span class="stg">scikit-learn</span>
+          <span class="stg">DigitalOcean</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="C">
+    <div class="sl">// featured work</div>
+    <h2 class="sh">What I've <span>Built</span></h2>
+
+    <div class="pf">
+      <div class="pfl">
+        <div class="pflabel">Latest Project — 2025</div>
+        <div class="pftitle">Video<br>Call App</div>
+        <p class="pfdesc">Real-time peer-to-peer video calling platform built with WebRTC + Django Channels (WebSockets). Supports live video, audio, and chat. Deployed and running live on Render — visit it right now.</p>
+        <div class="pftech">
+          <span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">WebRTC</span>
+          <span class="ptag">Channels</span><span class="ptag">WebSockets</span><span class="ptag">Render</span>
+        </div>
+        <div class="pfbtns">
+          <a href="https://videocall-1-dmfm.onrender.com" target="_blank" class="ba">Live Demo ↗</a>
+          <a href="https://github.com/Sunatillo2024" target="_blank" class="bb">GitHub</a>
+        </div>
+      </div>
+      <div class="pfr">
+        <div class="pfscreen">
+          <div class="pfbar">
+            <div class="psd psd1"></div><div class="psd psd2"></div><div class="psd psd3"></div>
+            <div class="purl">videocall-1-dmfm.onrender.com</div>
+          </div>
+          <div class="pfprev">
+            <div class="ppico"><i class="fas fa-video"></i></div>
+            <div class="pptitle">VideoCall App</div>
+            <div class="ppsub">WebRTC · Django Channels · Live on Render</div>
+            <a href="https://videocall-1-dmfm.onrender.com" target="_blank" class="pplive">
+              <div class="plivd"></div>Open Live App
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pg">
+      <div class="pc">
+        <span class="pbadge blive">Live</span>
+        <div class="pnum">01</div>
+        <div class="pico"><i class="fas fa-wallet"></i></div>
+        <div class="ptitle">FinTech DRF API M-BANK</div>
+        <p class="pdesc">Complete banking & wallet API system. JWT auth, transaction processing, user accounts — production DRF architecture with full documentation.</p>
+        <div class="ptech"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">DRF</span><span class="ptag">PostgreSQL</span><span class="ptag">JWT</span></div>
+        <a href="https://github.com/Sunatillo2024/FinTech_DRF_API_M_BANK" target="_blank" class="pl">View Code <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="pc">
+        <div class="pnum">02</div>
+        <div class="pico"><i class="fas fa-store"></i></div>
+        <div class="ptitle">ViewStore Marketplace</div>
+        <p class="pdesc">2-year development full-scale marketplace. Products, orders, auth, admin panel. Django + Vue.js full stack — private but production-ready.</p>
+        <div class="ptech"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">PostgreSQL</span><span class="ptag">Vue.js</span></div>
+        <a href="#" class="pl">Private <i class="fas fa-lock"></i></a>
+      </div>
+      <div class="pc">
+        <div class="pnum">03</div>
+        <div class="pico"><i class="fas fa-robot"></i></div>
+        <div class="ptitle">Mobile Shop Telegram Bot</div>
+        <p class="pdesc">Feature-rich Telegram bot for online mobile shop. Cart, payment gateway integration, admin inventory management.</p>
+        <div class="ptech"><span class="ptag">Python</span><span class="ptag">Telegram API</span><span class="ptag">Payment GW</span></div>
+        <a href="https://github.com/Sunatillo2024/mobile_shop_tg_bot" target="_blank" class="pl">View Code <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="pc">
+        <div class="pnum">04</div>
+        <div class="pico"><i class="fas fa-bolt"></i></div>
+        <div class="ptitle">FastAPI CRUD App</div>
+        <p class="pdesc">High-performance async CRUD application with Pydantic validation and auto-generated Swagger API documentation.</p>
+        <div class="ptech"><span class="ptag">Python</span><span class="ptag">FastAPI</span><span class="ptag">Pydantic</span><span class="ptag">SQLite</span></div>
+        <a href="https://github.com/Sunatillo2024/FastAPI_APP_crud" target="_blank" class="pl">View Code <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="pc">
+        <div class="pnum">05</div>
+        <div class="pico"><i class="fas fa-graduation-cap"></i></div>
+        <div class="ptitle">LevelUp Learning Platform</div>
+        <p class="pdesc">Django-based LMS with course management, user progress tracking, and backend analytics. Solid architecture.</p>
+        <div class="ptech"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">PostgreSQL</span></div>
+        <a href="https://github.com/Sunatillo2024/LevelUp" target="_blank" class="pl">View Code <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="pc">
+        <div class="pnum">06</div>
+        <div class="pico"><i class="fas fa-globe"></i></div>
+        <div class="ptitle">MkaslMarket</div>
+        <p class="pdesc">International marketplace connecting APIs from multiple countries. API integration, data synchronization, DevOps deployment.</p>
+        <div class="ptech"><span class="ptag">Python</span><span class="ptag">Django</span><span class="ptag">API</span><span class="ptag">DevOps</span></div>
+        <a href="https://github.com/Sunatillo2024/MkaslMarket" target="_blank" class="pl">View Code <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai-section">
+  <div class="C">
+    <div class="sl">// ai assistant</div>
+    <h2 class="sh">Ask AI <span>About Me</span></h2>
+    <div class="aibox">
+      <div class="aih">
+        <div class="aihl">Portfolio AI Assistant <span class="aichip">Claude Powered</span></div>
+        <div class="ailive"><div class="ailvd"></div>Online Now</div>
+      </div>
+      <div id="CHAT">
+        <div class="cm a"><div class="cl">// AI Assistant</div>Salom! Men Sunatillo ning shaxsiy AI assistentiman. Uning ko'nikmalari, loyihalari, tajribasi yoki VideoCall app haqida istalgan savolni bering. Ask me anything in Uzbek, Russian, or English!</div>
+      </div>
+      <div class="suggs">
+        <button class="sg" onclick="sq(this)">Tell me about VideoCall app</button>
+        <button class="sg" onclick="sq(this)">What's his best project?</button>
+        <button class="sg" onclick="sq(this)">Qanday texnologiyalarni biladi?</button>
+        <button class="sg" onclick="sq(this)">How to hire Sunatillo?</button>
+        <button class="sg" onclick="sq(this)">What APIs can he build?</button>
+        <button class="sg" onclick="sq(this)">Его опыт работы?</button>
+      </div>
+      <div class="aiir">
+        <input type="text" id="CINP" placeholder="Ask anything about Sunatillo...">
+        <button id="CSND" onclick="snd()">Send →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="C">
+    <div class="sl">// contact</div>
+    <h2 class="sh">Let's <span>Talk</span></h2>
+    <div class="cg">
+      <a href="https://t.me/jinga_1" target="_blank" class="ctc">
+        <div class="ctci"><i class="fab fa-telegram"></i></div>
+        <div class="ctcn"><h3>Telegram</h3><p>@jinga_1 — fastest reply</p></div>
+      </a>
+      <a href="mailto:sunatlohgafur1214@gmail.com" class="ctc">
+        <div class="ctci"><i class="fas fa-envelope"></i></div>
+        <div class="ctcn"><h3>Email</h3><p>sunatlohgafur1214@gmail.com</p></div>
+      </a>
+      <a href="tel:+998880147646" class="ctc">
+        <div class="ctci"><i class="fas fa-phone"></i></div>
+        <div class="ctcn"><h3>Phone</h3><p>+998 880 147 646</p></div>
+      </a>
+      <a href="https://instagram.com/m.tillo__" target="_blank" class="ctc">
+        <div class="ctci"><i class="fab fa-instagram"></i></div>
+        <div class="ctcn"><h3>Instagram</h3><p>@m.tillo__</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">Sunatillo M.</div>
+  <div class="fls">
+    <a href="#home">Home</a><a href="#about">About</a>
+    <a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+  </div>
+  <div class="fc">© 2025 Sunatillo Marufjanov</div>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('CUR'),cur2=document.getElementById('CUR2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx-5+'px';cur.style.top=my-5+'px';});
+(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cur2.style.left=rx-17+'px';cur2.style.top=ry-17+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,input,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='scale(2.5)';cur2.style.transform='scale(1.5)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='scale(1)';cur2.style.transform='scale(1)';});
+});
+
+// SCROLL PROGRESS
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  document.getElementById('PROG').style.width=Math.min(p*100,100)+'%';
+});
+
+// PARTICLE CANVAS
+const cvs=document.getElementById('CVS'),ctx=cvs.getContext('2d');
+function resize(){cvs.width=window.innerWidth;cvs.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const pts=Array.from({length:100},()=>({
+  x:Math.random()*cvs.width,y:Math.random()*cvs.height,
+  vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,
+  r:Math.random()*1.3+.3,
+  c:Math.random()>.5?'0,200,240':'123,47,255'
+}));
+(function frame(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=cvs.width;if(p.x>cvs.width)p.x=0;
+    if(p.y<0)p.y=cvs.height;if(p.y>cvs.height)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.c},.35)`;ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+    if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,200,240,${(1-d/120)*.06})`;ctx.stroke();}
+  }
+  requestAnimationFrame(frame);
+})();
+
+// MARQUEE
+const ITEMS=['Python','Django','FastAPI','WebRTC','PostgreSQL','Redis','Docker','Go','Telegram Bots','Payment APIs','JWT Auth','Nginx','Linux','WebSockets','AI Integration','REST APIs','DRF','Microservices','Django Channels'];
+const mt=document.getElementById('MT');
+const full=[...ITEMS,...ITEMS].map(t=>`<div class="mi"><span class="mdot">◆</span>${t}</div>`).join('');
+mt.innerHTML=full+full;
+
+// AI CHAT
+const chat=document.getElementById('CHAT'),inp=document.getElementById('CINP'),btn=document.getElementById('CSND');
+
+function sq(el){inp.value=el.textContent;snd();}
+
+async function snd(){
+  const q=inp.value.trim();if(!q)return;
+  inp.value='';btn.disabled=true;
+  addM(q,'u');
+  const loader=addM('<div class="tyi"><div class="tyd"></div><div class="tyd"></div><div class="tyd"></div></div>','a');
+  const reply=await ai(q);
+  loader.innerHTML=`<div class="cl">// AI Assistant</div>${reply}`;
+  chat.scrollTop=9999;btn.disabled=false;
+}
+
+function addM(html,cls){
+  const d=document.createElement('div');d.className='cm '+cls;
+  d.innerHTML=`<div class="cl">// ${cls==='u'?'You':'AI'}</div>${html}`;
+  chat.appendChild(d);chat.scrollTop=9999;return d;
+}
+
+inp.addEventListener('keydown',e=>{if(e.key==='Enter')snd();});
+
+async function ai(q){
+  const SYS=`You are Sunatillo Marufjanov's personal portfolio AI assistant.
+
+Sunatillo's full profile:
+- 17-year-old Python Backend Developer from Tashkent, Uzbekistan
+- Started coding at age 14, now 3+ years of real experience
+- 10+ production projects shipped
+- Primary stack: Python, Django, FastAPI, Django REST Framework
+- Databases: PostgreSQL (primary), Redis (caching/queues), SQLite, MySQL
+- DevOps: Docker, Linux (Ubuntu/Debian), Nginx, Gunicorn, Git, CI/CD via GitHub Actions, Render, DigitalOcean
+- Also: Go (actively learning with Beego), JavaScript/Vue.js (basic), C++ (basic), TypeScript
+- Specializations: Backend API design, Telegram bot development, Payment system integration (Click, Payme), AI integration, WebRTC/WebSockets, Security & JWT auth, Microservices
+
+LATEST & BEST PROJECT: VideoCall Platform
+- Real-time video calling app with WebRTC + Django Channels (WebSockets)
+- Live demo: https://videocall-1-dmfm.onrender.com
+- This shows his most advanced skills: real-time communication, async Django, WebRTC signaling
+
+Other notable projects:
+- FinTech DRF API M-BANK: Full banking/wallet API (github.com/Sunatillo2024/FinTech_DRF_API_M_BANK)
+- ViewStore Marketplace: 2-year developed full marketplace, Django + Vue.js (private)
+- Mobile Shop Telegram Bot: Telegram shop with payments (github.com/Sunatillo2024/mobile_shop_tg_bot)
+- FastAPI CRUD App (github.com/Sunatillo2024/FastAPI_APP_crud)
+- LevelUp Learning Platform (github.com/Sunatillo2024/LevelUp)
+- MkaslMarket: International marketplace (github.com/Sunatillo2024/MkaslMarket)
+- MediaVault: Instagram/YouTube video scraper (Python + Go)
+
+Languages spoken: Uzbek (native), Russian (fluent), English (B2+)
+Contact: Telegram @jinga_1 (fastest!), Email: sunatlohgafur1214@gmail.com, Phone: +998880147646, Instagram: @m.tillo__, GitHub: github.com/Sunatillo2024
+Currently exploring: Machine Learning (scikit-learn), GraphQL, AWS/cloud deployments
+
+Reply in the SAME language as the user's question (Uzbek/Russian/English). Keep answers concise (2-4 sentences) and helpful. For hiring inquiries, always mention Telegram @jinga_1 as the fastest way to reach him.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:[{role:'user',content:q}]})
+    });
+    const d=await r.json();
+    return d.content?.[0]?.text||'Sorry, no response received.';
+  }catch(e){return 'Connection error. Try again in a moment.';}
+}
+</script>
 </body>
 </html>
